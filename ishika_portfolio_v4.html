@@ -1,0 +1,399 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#060608;--s1:#0c0c12;--s2:#111118;--s3:#181820;
+  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.12);
+  --v:#a78bfa;--v2:#7c3aed;--g:#34d399;--g2:#059669;
+  --pink:#f472b6;--amber:#fbbf24;
+  --t1:#f4f0ff;--t2:#9d9ab5;--t3:#6b6885;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);overflow-x:hidden}
+.canvas-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:0.18}
+.orb1{width:700px;height:700px;background:#7c3aed;top:-200px;left:-200px;animation:drift1 20s ease-in-out infinite alternate}
+.orb2{width:500px;height:500px;background:#059669;bottom:-150px;right:-100px;animation:drift2 15s ease-in-out infinite alternate}
+.orb3{width:300px;height:300px;background:#f472b6;top:40%;left:60%;animation:drift3 25s ease-in-out infinite alternate}
+@keyframes drift1{to{transform:translate(80px,60px)}}
+@keyframes drift2{to{transform:translate(-60px,-80px)}}
+@keyframes drift3{to{transform:translate(-40px,60px)}}
+.grid-lines{position:absolute;inset:0;background-image:linear-gradient(rgba(167,139,250,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(167,139,250,0.04) 1px,transparent 1px);background-size:60px 60px}
+nav{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:1rem 2.5rem;background:rgba(6,6,8,0.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
+.logo{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;background:linear-gradient(135deg,var(--v),var(--g));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-0.02em}
+.nav-links{display:flex;gap:0.25rem}
+.nav-links button{background:none;border:none;color:var(--t2);font-size:0.82rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:0.5rem 1rem;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s}
+.nav-links button:hover{color:var(--t1);background:rgba(167,139,250,0.08)}
+main{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:0 2rem}
+.hero{padding:6rem 0 5rem}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:100px;background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.25);font-size:0.78rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--v);margin-bottom:2rem}
+.badge-dot{width:7px;height:7px;border-radius:50%;background:var(--g);box-shadow:0 0 8px var(--g);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.8rem,5vw,4.5rem);line-height:1.05;font-weight:800;letter-spacing:-0.04em;margin-bottom:1.25rem}
+.hero h1 .line2{color:rgba(244,240,255,0.15);-webkit-text-stroke:1.5px rgba(167,139,250,0.7)}
+.hero h1 .accent{background:linear-gradient(135deg,var(--v),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-desc{font-size:1.1rem;color:var(--t2);max-width:540px;line-height:1.8;margin-bottom:2.5rem;font-weight:300}
+.hero-btns{display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:4rem}
+.btn{padding:0.8rem 1.8rem;border-radius:10px;font-size:0.9rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;border:none;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-v{background:linear-gradient(135deg,var(--v2),#4c1d95);color:#fff}
+.btn-v:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(124,58,237,0.4)}
+.btn-ghost{background:transparent;color:var(--t1);border:1px solid var(--border2)}
+.btn-ghost:hover{border-color:var(--v);color:var(--v);transform:translateY(-2px)}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-radius:16px;overflow:hidden;border:1px solid var(--border)}
+.stat{background:var(--s1);padding:1.5rem;text-align:center}
+.stat-num{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;background:linear-gradient(135deg,var(--v),var(--g));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-lbl{font-size:0.72rem;color:var(--t3);text-transform:uppercase;letter-spacing:0.1em;margin-top:4px}
+section{padding:5rem 0}
+.sec-eyebrow{font-size:0.72rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:var(--g);margin-bottom:0.5rem;display:flex;align-items:center;gap:8px}
+.sec-eyebrow::before{content:'';width:24px;height:1px;background:var(--g)}
+h2{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,3vw,2.5rem);font-weight:800;letter-spacing:-0.03em;margin-bottom:0.5rem}
+h2 span{background:linear-gradient(135deg,var(--v),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sec-sub{color:var(--t2);font-size:0.95rem;margin-bottom:3rem;font-weight:300;max-width:500px;line-height:1.7}
+.skills-wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border-radius:20px;overflow:hidden;border:1px solid var(--border)}
+.skill-block{background:var(--s1);padding:1.5rem;transition:background 0.2s}
+.skill-block:hover{background:var(--s2)}
+.sk-icon{font-size:1.6rem;margin-bottom:0.75rem}
+.sk-title{font-size:0.82rem;font-weight:500;color:var(--t1);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.06em}
+.sk-item{display:inline-block;background:rgba(167,139,250,0.07);border:1px solid rgba(167,139,250,0.15);color:var(--v);font-size:0.72rem;padding:2px 10px;border-radius:100px;margin:2px 2px 2px 0;font-weight:500}
+.sk-item.green{background:rgba(52,211,153,0.07);border-color:rgba(52,211,153,0.15);color:var(--g)}
+.projects-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem}
+.proj-card{background:var(--s1);border:1px solid var(--border);border-radius:20px;overflow:hidden;cursor:pointer;transition:all 0.3s;position:relative}
+.proj-card:hover{border-color:rgba(167,139,250,0.3);transform:translateY(-4px)}
+.proj-top-bar{height:3px;background:linear-gradient(90deg,var(--v),var(--pink))}
+.proj-top-bar.green{background:linear-gradient(90deg,var(--g),var(--amber))}
+.proj-body{padding:1.5rem}
+.proj-num{font-family:'Syne',sans-serif;font-size:0.7rem;color:var(--t3);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.75rem}
+.proj-title{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:0.75rem;letter-spacing:-0.02em}
+.proj-short{font-size:0.85rem;color:var(--t2);line-height:1.7;margin-bottom:1.25rem}
+.proj-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:1.25rem}
+.ptag{font-size:0.7rem;font-weight:500;padding:3px 10px;border-radius:100px;background:rgba(255,255,255,0.04);border:1px solid var(--border2);color:var(--t2)}
+.ptag.p{background:rgba(167,139,250,0.08);border-color:rgba(167,139,250,0.2);color:var(--v)}
+.ptag.g{background:rgba(52,211,153,0.08);border-color:rgba(52,211,153,0.2);color:var(--g)}
+.proj-expand-btn{display:flex;align-items:center;gap:6px;font-size:0.8rem;font-weight:500;color:var(--v);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;padding:0;transition:gap 0.2s}
+.proj-expand-btn:hover{gap:10px}
+.modal-overlay{display:none;position:fixed;inset:0;z-index:500;background:rgba(6,6,8,0.85);backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:2rem}
+.modal-overlay.show{display:flex}
+.modal{background:var(--s2);border:1px solid var(--border2);border-radius:24px;width:100%;max-width:700px;max-height:85vh;overflow-y:auto;position:relative}
+.modal-bar{height:4px;background:linear-gradient(90deg,var(--v),var(--pink));border-radius:4px 4px 0 0}
+.modal-bar.green{background:linear-gradient(90deg,var(--g),var(--amber))}
+.modal-inner{padding:2rem}
+.modal-close{position:absolute;top:1.25rem;right:1.25rem;background:rgba(255,255,255,0.06);border:1px solid var(--border);color:var(--t2);width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;transition:all 0.2s}
+.modal-close:hover{background:rgba(255,255,255,0.12);color:var(--t1)}
+.modal-badge{font-size:0.7rem;font-weight:500;color:var(--g);background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.2);padding:3px 12px;border-radius:100px;display:inline-block;margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.1em}
+.modal-title{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;letter-spacing:-0.03em;margin-bottom:1.5rem}
+.modal-section{margin-bottom:1.5rem}
+.modal-section-label{font-size:0.72rem;font-weight:500;color:var(--t3);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:0.6rem}
+.modal-desc{font-size:0.93rem;color:var(--t2);line-height:1.8}
+.modal-features{display:flex;flex-direction:column;gap:0.5rem}
+.modal-feat{display:flex;align-items:flex-start;gap:10px;font-size:0.88rem;color:var(--t2);line-height:1.6}
+.feat-dot{width:6px;height:6px;border-radius:50%;background:var(--g);margin-top:6px;flex-shrink:0}
+.modal-tags{display:flex;flex-wrap:wrap;gap:6px}
+.modal-tag{font-size:0.75rem;font-weight:500;padding:4px 12px;border-radius:100px}
+.modal-tag.purple{background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.25);color:var(--v)}
+.modal-tag.green{background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.25);color:var(--g)}
+.modal-tag.neutral{background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--t2)}
+.deploy-row{display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:0.75rem}
+.deploy-btn{display:inline-flex;align-items:center;gap:8px;padding:0.65rem 1.25rem;border-radius:10px;font-size:0.85rem;font-weight:500;text-decoration:none;transition:all 0.2s;cursor:pointer;border:none;font-family:'DM Sans',sans-serif}
+.deploy-btn.primary{background:linear-gradient(135deg,var(--v2),#4c1d95);color:#fff}
+.deploy-btn.primary:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(124,58,237,0.4)}
+.deploy-btn.outline{background:transparent;color:var(--t1);border:1px solid var(--border2)}
+.deploy-btn.outline:hover{border-color:var(--v);color:var(--v)}
+.exp-wrap{display:grid;gap:1rem}
+.exp-card{background:var(--s1);border:1px solid var(--border);border-radius:20px;padding:2rem;display:flex;gap:1.5rem;align-items:flex-start;transition:border-color 0.2s}
+.exp-card:hover{border-color:rgba(167,139,250,0.25)}
+.exp-logo{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,rgba(167,139,250,0.15),rgba(52,211,153,0.1));border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0}
+.exp-right{flex:1}
+.exp-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.75rem;gap:1rem}
+.exp-role{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700}
+.exp-org{font-size:0.85rem;color:var(--v);margin-top:3px}
+.exp-date{font-size:0.75rem;color:var(--t3);background:var(--s3);border:1px solid var(--border);padding:4px 12px;border-radius:100px;white-space:nowrap}
+.exp-bullets{list-style:none;display:flex;flex-direction:column;gap:0.5rem}
+.exp-bullets li{font-size:0.87rem;color:var(--t2);display:flex;gap:10px;line-height:1.6}
+.exp-bullets li::before{content:'▸';color:var(--g);flex-shrink:0;margin-top:1px}
+.awards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem}
+.aw-card{background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:1.25rem;display:flex;flex-direction:column;gap:0.75rem;transition:all 0.2s;position:relative;overflow:hidden}
+.aw-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--v),var(--g));opacity:0;transition:opacity 0.2s}
+.aw-card:hover{border-color:rgba(167,139,250,0.2);transform:translateY(-2px)}
+.aw-card:hover::before{opacity:1}
+.aw-icon{font-size:1.4rem}
+.aw-text{font-size:0.82rem;color:var(--t2);line-height:1.6}
+.edu-card{background:var(--s1);border:1px solid var(--border);border-radius:20px;padding:2rem;display:flex;gap:1.5rem;align-items:flex-start}
+.edu-logo{width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,rgba(167,139,250,0.2),rgba(52,211,153,0.1));border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0}
+.edu-info .deg{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:4px}
+.edu-info .uni{font-size:0.88rem;color:var(--v);margin-bottom:1rem}
+.edu-pills{display:flex;gap:0.5rem;flex-wrap:wrap}
+.edu-pill{font-size:0.75rem;font-weight:500;padding:4px 14px;border-radius:100px;background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.2);color:var(--g)}
+.contact-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
+.contact-card{background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:1.25rem 1.5rem;display:flex;align-items:center;gap:1rem;text-decoration:none;transition:all 0.2s;cursor:pointer}
+.contact-card:hover{border-color:rgba(167,139,250,0.3);transform:translateY(-2px)}
+.contact-icon-wrap{width:40px;height:40px;border-radius:12px;background:rgba(167,139,250,0.1);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.contact-label{font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--t3);margin-bottom:2px}
+.contact-val{font-size:0.88rem;font-weight:500;color:var(--t1)}
+footer{text-align:center;padding:3rem 0;border-top:1px solid var(--border);color:var(--t3);font-size:0.8rem;margin-top:2rem}
+.footer-name{font-family:'Syne',sans-serif;font-weight:700;color:var(--v);font-size:1rem}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border2),transparent)}
+</style>
+
+<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Ishika's portfolio — full-stack developer and ML enthusiast</h2>
+
+<div class="canvas-bg">
+  <div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div>
+  <div class="grid-lines"></div>
+</div>
+
+<nav>
+  <div class="logo">Ishika.</div>
+  <div class="nav-links">
+    <button onclick="document.getElementById('edu').scrollIntoView({behavior:'smooth'})">Education</button>
+    <button onclick="document.getElementById('skills-sec').scrollIntoView({behavior:'smooth'})">Skills</button>
+    <button onclick="document.getElementById('projects-sec').scrollIntoView({behavior:'smooth'})">Projects</button>
+    <button onclick="document.getElementById('contact-sec').scrollIntoView({behavior:'smooth'})">Contact</button>
+  </div>
+</nav>
+
+<main>
+  <section class="hero">
+    <div class="hero-badge"><div class="badge-dot"></div>Available for Internships & Collaborations</div>
+    <h1>Building the<br><span class="line2">future with</span><br><span class="accent">code & AI.</span></h1>
+    <p class="hero-desc">Full-Stack Developer & ML Enthusiast. B.Tech CS student at MJPRU crafting intelligent, human-centered apps — from MERN platforms to machine learning pipelines.</p>
+    <div class="hero-btns">
+      <a class="btn btn-v" href="mailto:ishikasaxena3011@gmail.com"><i class="ti ti-mail" aria-hidden="true"></i>Get in Touch</a>
+      <a class="btn btn-ghost" href="https://drive.google.com/file/d/1m1vr_0S-vsf8m3AZ1Hur04zolv4lhYcn/view?usp=drive_link" target="_blank"><i class="ti ti-download" aria-hidden="true"></i>Download Resume</a>
+    </div>
+    <div class="stats-row">
+      <div class="stat"><div class="stat-num">300+</div><div class="stat-lbl">LeetCode</div></div>
+      <div class="stat"><div class="stat-num">8.6+</div><div class="stat-lbl">CGPA</div></div>
+      <div class="stat"><div class="stat-num">10+</div><div class="stat-lbl">Open Source PRs</div></div>
+      <div class="stat"><div class="stat-num">GATE</div><div class="stat-lbl">2026 Qualified</div></div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="edu">
+    <div class="sec-eyebrow">Education</div>
+    <h2>Academic <span>Background</span></h2>
+    <p class="sec-sub">Consistently strong performance across all years of my B.Tech.</p>
+    <div class="edu-card">
+      <div class="edu-logo">🎓</div>
+      <div class="edu-info">
+        <div class="deg">B.Tech — Computer Science & Information Technology</div>
+        <div class="uni">Mahatma Jyotiba Phule Rohilkhand University</div>
+        <div class="edu-pills">
+          <span class="edu-pill">1st Year — 8.86</span>
+          <span class="edu-pill">2nd Year — 8.57</span>
+          <span class="edu-pill">3rd Year — 8.58</span>
+        </div>
+      </div>
+    </div>
+    <div class="edu-card" style="margin-top:1rem">
+      <div class="edu-logo">🏫</div>
+      <div class="edu-info">
+        <div class="deg">12th — Intermediate (Science)</div>
+        <div class="uni">Kendriya Vidyalaya JLA No. 2, Bareilly Cantt</div>
+        <div class="edu-pills">
+          <span class="edu-pill">Board — CBSE</span>
+          <span class="edu-pill">Percentage — 93%</span>
+        </div>
+      </div>
+    </div>
+    <div class="edu-card" style="margin-top:1rem">
+      <div class="edu-logo">📚</div>
+      <div class="edu-info">
+        <div class="deg">10th — High School</div>
+        <div class="uni">Kendriya Vidyalaya JLA No. 2, Bareilly Cantt</div>
+        <div class="edu-pills">
+          <span class="edu-pill">Board — CBSE</span>
+          <span class="edu-pill">Percentage — 92.8%</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="skills-sec">
+    <div class="sec-eyebrow">Skills</div>
+    <h2>Technical <span>Arsenal</span></h2>
+    <p class="sec-sub">A well-rounded stack spanning full-stack dev, ML, and core CS fundamentals.</p>
+    <div class="skills-wrap">
+      <div class="skill-block"><div class="sk-icon">💻</div><div class="sk-title">Languages</div><div><span class="sk-item">Java</span><span class="sk-item">Python</span><span class="sk-item">C++</span><span class="sk-item">JavaScript</span><span class="sk-item">R</span></div></div>
+      <div class="skill-block"><div class="sk-icon">🌐</div><div class="sk-title">Full-Stack (MERN)</div><div><span class="sk-item green">MongoDB</span><span class="sk-item green">Express.js</span><span class="sk-item green">React.js</span><span class="sk-item green">Node.js</span></div></div>
+      <div class="skill-block"><div class="sk-icon">🧪</div><div class="sk-title">ML & Data Science</div><div><span class="sk-item">NumPy</span><span class="sk-item">Pandas</span><span class="sk-item">Scikit-learn</span><span class="sk-item">Random Forest</span></div></div>
+      <div class="skill-block"><div class="sk-icon">🗄️</div><div class="sk-title">Databases</div><div><span class="sk-item green">MySQL</span><span class="sk-item green">MongoDB</span></div></div>
+      <div class="skill-block"><div class="sk-icon">⚙️</div><div class="sk-title">Tools & Platforms</div><div><span class="sk-item">VS Code</span><span class="sk-item">Git</span><span class="sk-item">GitHub</span><span class="sk-item">Jupyter</span><span class="sk-item">Tailwind CSS</span></div></div>
+      <div class="skill-block"><div class="sk-icon">🧠</div><div class="sk-title">Core CS</div><div><span class="sk-item green">OS</span><span class="sk-item green">DSA</span><span class="sk-item green">Networks</span><span class="sk-item green">DBMS</span></div></div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="projects-sec">
+    <div class="sec-eyebrow">Projects</div>
+    <h2>Things I've <span>Built</span></h2>
+    <p class="sec-sub">Click any project card to see full details, features, and links.</p>
+    <div class="projects-grid">
+      <div class="proj-card" onclick="openModal('stayease')">
+        <div class="proj-top-bar"></div>
+        <div class="proj-body">
+          <div class="proj-num">01 / AI-Powered Platform</div>
+          <div class="proj-title">StayEase+</div>
+          <div class="proj-short">Smart accommodation platform helping travelers find nearby PGs, guest houses & parking around tourist spots.</div>
+          <div class="proj-tags"><span class="ptag p">React.js</span><span class="ptag p">Node.js</span><span class="ptag g">AI Integration</span><span class="ptag">MongoDB</span><span class="ptag">Tailwind</span></div>
+          <button class="proj-expand-btn">View Details ↓</button>
+        </div>
+      </div>
+      <div class="proj-card" onclick="openModal('meramarket')">
+        <div class="proj-top-bar green"></div>
+        <div class="proj-body">
+          <div class="proj-num">02 / Hyperlocal E-Commerce</div>
+          <div class="proj-title">MeraMarket</div>
+          <div class="proj-short">Hyperlocal marketplace connecting local shopkeepers with nearby customers for seamless online shopping.</div>
+          <div class="proj-tags"><span class="ptag g">MERN Stack</span><span class="ptag g">Tailwind CSS</span><span class="ptag">Auth System</span><span class="ptag">Seller Dashboard</span></div>
+          <button class="proj-expand-btn">View Details ↓</button>
+        </div>
+      </div>
+      <div class="proj-card" onclick="openModal('ml')">
+        <div class="proj-top-bar"></div>
+        <div class="proj-body">
+          <div class="proj-num">03 / Machine Learning</div>
+          <div class="proj-title">Student Performance Analyzer</div>
+          <div class="proj-short">ML system predicting student academic performance and dropout risk with personalized study recommendations.</div>
+          <div class="proj-tags"><span class="ptag p">Python</span><span class="ptag p">Scikit-learn</span><span class="ptag g">Random Forest</span><span class="ptag">Pandas</span><span class="ptag">NumPy</span></div>
+          <button class="proj-expand-btn">View Details ↓</button>
+        </div>
+      </div>
+      <div class="proj-card" onclick="openModal('store')">
+        <div class="proj-top-bar green"></div>
+        <div class="proj-body">
+          <div class="proj-num">04 / Database Systems</div>
+          <div class="proj-title">Store Management System</div>
+          <div class="proj-short">Scalable DBMS for inventory, stock & sales across 100+ stores with optimized schemas and transaction workflows.</div>
+          <div class="proj-tags"><span class="ptag g">MySQL</span><span class="ptag">Relational DB</span><span class="ptag">SQL Optimization</span><span class="ptag">Transactions</span></div>
+          <button class="proj-expand-btn">View Details ↓</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section>
+    <div class="sec-eyebrow">Experience</div>
+    <h2>Open Source <span>Journey</span></h2>
+    <div class="exp-wrap">
+      <div class="exp-card">
+        <div class="exp-logo">🌍</div>
+        <div class="exp-right">
+          <div class="exp-head">
+            <div><div class="exp-role">Open Source Contributor</div><div class="exp-org">GirlScript Summer of Code (GSSoC)</div></div>
+            <div class="exp-date">2025</div>
+          </div>
+          <ul class="exp-bullets">
+            <li>Contributed to open-source projects resolving real-world issues and implementing new features across multiple repositories</li>
+            <li>Collaborated with mentors and international contributors using professional Git & GitHub workflows</li>
+            <li>Raised and merged 10+ pull requests, directly improving project functionality and code quality</li>
+            <li>Fixed critical bugs and enhanced UI/UX across various open-source codebases</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section>
+    <div class="sec-eyebrow">Achievements</div>
+    <h2>Awards & <span>Recognition</span></h2>
+    <div class="awards-grid">
+      <div class="aw-card"><div class="aw-icon">🏆</div><div class="aw-text">Qualified GATE 2026 in Computer Science Engineering — a national-level competitive exam</div></div>
+      <div class="aw-card"><div class="aw-icon">💡</div><div class="aw-text">Solved 300+ LeetCode problems, building strong DSA and algorithmic problem-solving skills</div></div>
+      <div class="aw-card"><div class="aw-icon">🎨</div><div class="aw-text">Earned Adobe Hackathon Certification for participation and successful project completion</div></div>
+      <div class="aw-card"><div class="aw-icon">📚</div><div class="aw-text">Completed 160-day GFG DSA Course with deep fundamentals and consistent practice</div></div>
+      <div class="aw-card"><div class="aw-icon">🎤</div><div class="aw-text">Delivered AI model explanations at AI Impact Summit 2025 (MJPRU), engaging 100+ participants</div></div>
+      <div class="aw-card"><div class="aw-icon">🌟</div><div class="aw-text">Active open-source contributor under GirlScript Summer of Code with merged PRs</div></div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="contact-sec">
+    <div class="sec-eyebrow">Contact</div>
+    <h2>Let's <span>Connect</span></h2>
+    <p class="sec-sub">Open to internships, freelance projects, and exciting collaborations. Let's build something great together.</p>
+    <div class="contact-grid">
+      <a class="contact-card" href="mailto:ishikasaxena3011@gmail.com">
+        <div class="contact-icon-wrap">📧</div>
+        <div><div class="contact-label">Email</div><div class="contact-val">ishikasaxena3011@gmail.com</div></div>
+      </a>
+      <a class="contact-card" href="tel:+919258855840">
+        <div class="contact-icon-wrap">📞</div>
+        <div><div class="contact-label">Phone</div><div class="contact-val">+91 92588 55840</div></div>
+      </a>
+      <a class="contact-card" href="https://www.linkedin.com/in/ishika-456238294" target="_blank">
+        <div class="contact-icon-wrap">💼</div>
+        <div><div class="contact-label">LinkedIn</div><div class="contact-val">linkedin.com/in/ishika</div></div>
+      </a>
+      <a class="contact-card" href="https://github.com/Ishika-codeit" target="_blank">
+        <div class="contact-icon-wrap">🐙</div>
+        <div><div class="contact-label">GitHub</div><div class="contact-val">github.com/Ishika-codeit</div></div>
+      </a>
+      <a class="contact-card" href="https://leetcode.com/u/ishi11/" target="_blank">
+        <div class="contact-icon-wrap">🧩</div>
+        <div><div class="contact-label">LeetCode</div><div class="contact-val">leetcode.com/u/ishi11</div></div>
+      </a>
+      <a class="contact-card" href="https://drive.google.com/file/d/1m1vr_0S-vsf8m3AZ1Hur04zolv4lhYcn/view?usp=drive_link" target="_blank">
+        <div class="contact-icon-wrap">📄</div>
+        <div><div class="contact-label">Resume</div><div class="contact-val">Download CV ↗</div></div>
+      </a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-name">Ishika.</div>
+  <p style="margin-top:8px">Designed & developed with passion · 2025</p>
+</footer>
+
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal-box">
+    <div class="modal-bar" id="modal-bar"></div>
+    <button class="modal-close" onclick="closeAllModals()">✕</button>
+    <div class="modal-inner" id="modal-content"></div>
+  </div>
+</div>
+
+<script>
+const GH = 'https://github.com/Ishika-codeit';
+const projects = {
+  stayease:{color:'purple',badge:'AI-Powered Platform',title:'StayEase+',desc:'StayEase+ is a community-driven smart accommodation platform that helps travelers discover nearby PGs, guest houses, and parking spaces around tourist destinations. The platform bridges the gap between travelers and local residents who have available spaces, making travel more accessible, affordable, and convenient.',features:['AI-powered recommendation engine that suggests accommodations based on user preferences, budget, and proximity to tourist spots','Community listing system where local residents can register, manage, and showcase available PGs, rooms, and parking spaces','Intuitive search with filters for price range, amenities, distance, and ratings','Real-time availability updates and booking management for hosts','Responsive UI built with Tailwind CSS ensuring smooth experience across all devices','Secure authentication with JWT and role-based access for travelers and hosts'],stack:{purple:['React.js','Node.js','Express.js','MongoDB','JWT Auth'],green:['AI Integration','Tailwind CSS','REST API'],neutral:['Git','VS Code']},live:'#',github:GH},
+  meramarket:{color:'green',badge:'Hyperlocal E-Commerce',title:'MeraMarket',desc:'MeraMarket is a hyperlocal e-commerce platform designed to digitally empower local shopkeepers by connecting them with nearby customers. It supports the digital transformation of local businesses by providing a full-featured marketplace with seller tools, customer shopping experience, and secure transactions.',features:['Seller dashboard for shopkeepers to manage product listings, inventory, and order tracking','Customer-facing storefront with advanced product filtering, search, and categories','Full cart system with quantity management, coupon codes, and checkout flow','Secure user authentication using JWT — separate roles for sellers and customers','Local delivery radius configuration allowing sellers to define serviceable areas','Responsive, mobile-first UI ensuring accessibility for local shopkeepers with any device'],stack:{purple:['React.js','Node.js','Express.js','MongoDB'],green:['Tailwind CSS','JWT Auth','REST API'],neutral:['Git','Nodemailer']},live:'#',github:GH},
+  ml:{color:'purple',badge:'Machine Learning Project',title:'Student Performance Analyzer',desc:'A complete end-to-end machine learning pipeline that analyzes student engagement data to predict academic performance and identify students at risk of dropout. The system goes beyond prediction — it provides a personalized recommendation engine that suggests tailored study strategies for each student.',features:['Data preprocessing pipeline handling missing values, feature encoding, and normalization using Pandas & NumPy','Multiple classification models (Logistic Regression, Decision Trees, Random Forest) benchmarked for accuracy','Random Forest classifier selected as final model with high accuracy on test set','Dropout risk scoring system that flags at-risk students early for intervention','Personalized recommendation engine generating custom study strategies per student profile','Visualizations and performance metrics (confusion matrix, ROC curve, feature importance) for model evaluation'],stack:{purple:['Python','Scikit-learn','Random Forest'],green:['Pandas','NumPy','Matplotlib'],neutral:['Jupyter Notebook','Seaborn']},live:'#',github:GH},
+  store:{color:'green',badge:'Database Systems',title:'Store Management System',desc:'A production-scale relational database management system built to handle the complexities of multi-store retail operations. Designed to manage inventory, track stock levels, process sales transactions, and generate operational reports for a network of 100+ stores.',features:['Optimized relational schema design with normalized tables for products, inventory, stores, staff, and sales','Complex SQL queries with JOINs, subqueries, and aggregations for real-time reporting','ACID-compliant transaction workflows ensuring data integrity across concurrent operations','Inventory alert system that triggers notifications when stock falls below defined thresholds','Sales analytics dashboard queries for revenue tracking, top products, and store performance','Scalable architecture capable of handling 100+ store branches with consistent performance'],stack:{purple:[],green:['MySQL','SQL Optimization','Stored Procedures'],neutral:['Transactions','ACID','Normalization','Indexing']},live:'#',github:GH}
+};
+
+function openModal(id){
+  const p=projects[id];
+  document.getElementById('modal-bar').className='modal-bar'+(p.color==='green'?' green':'');
+  let stackHtml='';
+  if(p.stack.purple.length) stackHtml+=p.stack.purple.map(t=>`<span class="modal-tag purple">${t}</span>`).join('');
+  if(p.stack.green.length) stackHtml+=p.stack.green.map(t=>`<span class="modal-tag green">${t}</span>`).join('');
+  if(p.stack.neutral.length) stackHtml+=p.stack.neutral.map(t=>`<span class="modal-tag neutral">${t}</span>`).join('');
+  document.getElementById('modal-content').innerHTML=`
+    <div class="modal-badge">${p.badge}</div>
+    <div class="modal-title">${p.title}</div>
+    <div class="modal-section"><div class="modal-section-label">About this project</div><div class="modal-desc">${p.desc}</div></div>
+    <div class="modal-section"><div class="modal-section-label">Key Features</div><div class="modal-features">${p.features.map(f=>`<div class="modal-feat"><div class="feat-dot"></div><span>${f}</span></div>`).join('')}</div></div>
+    <div class="modal-section"><div class="modal-section-label">Tech Stack</div><div class="modal-tags">${stackHtml}</div></div>
+    <div class="modal-section"><div class="modal-section-label">Links</div>
+      <div class="deploy-row">
+        ${p.live!='#'?`<a class="deploy-btn primary" href="${p.live}" target="_blank"><i class="ti ti-external-link" aria-hidden="true"></i>Live Demo</a>`:'<span style="font-size:0.82rem;color:var(--t3);align-self:center">Live demo coming soon</span>'}
+        <a class="deploy-btn outline" href="${p.github}" target="_blank"><i class="ti ti-brand-github" aria-hidden="true"></i>View on GitHub</a>
+      </div>
+    </div>`;
+  document.getElementById('modal-overlay').classList.add('show');
+  document.body.style.overflow='hidden';
+}
+function closeAllModals(){document.getElementById('modal-overlay').classList.remove('show');document.body.style.overflow='';}
+function closeModal(e){if(e.target===document.getElementById('modal-overlay'))closeAllModals();}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAllModals();});
+</script>
